@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Random User</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            color: #3d211b;
+
+            background-image: url("./high-angle-plant-notebook-frame.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* Heading */
+
+        .head {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-style: italic;
+            letter-spacing: 1px;
+            color: rgb(98, 12, 12);
+            text-shadow: 1px 2px 4px rgba(98, 12, 12, 0.12);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            color: #6b4438;
+        }
+
+
+        #result {
+            padding-top: 30px;
+            padding-bottom: 50px;
+            row-gap: 28px;
+            column-gap: 30px;
+        }
+
+        .cards {
+            padding: 0;
+            margin: 0;
+            background: rgba(255, 228, 196, 0.97);
+            border: 1px solid rgba(98, 12, 12, 0.18);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(45, 10, 5, 0.20);
+        }
+
+        .cards:hover {
+            box-shadow: 0 14px 28px rgba(45, 10, 5, 0.30);
+        }
+
+        .cards img {
+            display: block;
+            width: 100%;
+            height: 220px;
+            object-fit: contain;
+            padding: 15px;
+            background: #f9e8d3;
+            border-bottom: 1px solid rgba(98, 12, 12, 0.13);
+        }
+
+        .cards:hover img {
+            transform: scale(1.04);
+        }
+
+        .details {
+            padding: 16px;
+        }
+
+        .cards h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 19px;
+            font-weight: 700;
+            text-align: center;
+            color: rgb(98, 12, 12);
+            padding: 5px 0 14px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(98, 12, 12, 0.20);
+        }
+
+        .cards p {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 12px;
+            color: #74564a;
+            margin: 0;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(98, 12, 12, 0.10);
+        }
+
+        .cards span {
+            font-weight: 600;
+            color: rgb(98, 12, 12);
+            text-align: right;
+        }
+
+        .random-btn {
+            background: rgb(98, 12, 12);
+            color: bisque;
+            border: 1px solid rgb(98, 12, 12);
+            padding: 10px 30px;
+            border-radius: 25px;
+            transition: 0.3s;
+        }
+
+        .random-btn:hover {
+            background: bisque;
+            color: rgb(98, 12, 12);
+            border: 1px solid rgb(98, 12, 12);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Page Heading -->
+
+    <header class="text-center pt-4 px-3">
+
+        <h1 class="head">
+            <i class="fa-solid fa-user"></i>
+            Random User
+        </h1>
+
+        <p class="subtitle">
+            FIND RANDOM USERS. ENJOY IT.
+        </p>
+
+    </header>
+
+
+    <!-- User Cards -->
+
+    <div class="container">
+
+        <div class="row justify-content-center" id="result">
+
+        </div>
+
+        <!-- Random Button -->
+
+        <div class="row justify-content-center pb-5">
+
+            <div class="col-auto">
+
+                <button class="random-btn" onclick="reveal()">
+                    <i class="fa-solid fa-arrow"></i>
+                    Random
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- JavaScript -->
+
+    <script>
+
+        async function getdeatail() {
+
+            try {
+
+                const dataSet = await fetch('https://randomuser.me/api/?results=30');
+
+                const data = await dataSet.json();
+
+                return data;
+
+            }
+
+            catch (error) {
+
+                console.log("Error fetching data:", error);
+
+            }
+
+        }
+
+
+        async function reveal() {
+
+            const resHTML = document.getElementById('result');
+
+            const res = await getdeatail();
+            // console.log(res);
+            
+            // Generate random index no.
+
+            let num = Math.floor(Math.random() * res.results.length);
+
+            // console.log(num);
+
+            // Get random users
+
+            const datas = res.results.filter((key, index) => index == num).map(key =>
+
+                `<div class="cards col-12 col-sm-6 col-lg-4 col-xl-3 rounded">
+
+                    <div class="details">
+
+                        <img src="${key.picture.large}"
+                            alt="User Image"
+                            class="p-2">
+
+                        <h3>
+                            Name : ${key.name.title} ${key.name.first} ${key.name.last}
+                        </h3>
+
+                        <p>
+                            Gender
+                            <span>${key.gender}</span>
+                        </p>
+
+                        <p>
+                            Age
+                            <span>${key.dob.age}</span>
+                        </p>
+
+                        <p>
+                            Email
+                            <span>${key.email}</span>
+                        </p>
+
+                        <p>
+                            Country
+                            <span>${key.location.country}</span>
+                        </p>
+
+                        <p>
+                            Phone
+                            <span>${key.phone}</span>
+                        </p>
+
+                    </div>
+
+                </div>`
+
+            );
+
+
+            // Display resultt in HTML
+
+            resHTML.innerHTML = datas.join("");
+
+        }
+
+    </script>
+
+</body>
+
+</html>
